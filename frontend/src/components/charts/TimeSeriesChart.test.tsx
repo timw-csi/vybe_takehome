@@ -1,11 +1,35 @@
-import React from "react";
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import TimeSeriesChart from "./TimeSeriesChart";
+import { vi } from "vitest";
+import Chart from "react-apexcharts";
+import { ApexOptions } from "apexcharts";
 
-test("renders TimeSeriesChart with correct data", () => {
-  const data = [{ x: Date.now(), y: 50 }];
-  const { getByText } = render(<TimeSeriesChart data={data} />);
+vi.mock("react-apexcharts", () => {
+  return {
+    default: vi.fn(() => null),
+  };
+});
+const mockedChart = vi.mocked(Chart, true);
 
-  expect(getByText("50")).toBeInTheDocument();
+type ChartProps = {
+  options: ApexOptions;
+  series: Array<{
+    name?: string;
+    data: Array<{ x: number; y: number }>;
+  }>;
+  type: string;
+  width: string | number;
+};
+
+test("renders without crashing", () => {
+  const testData = [{ x: 1721389287273, y: 50 }];
+  expect(() => render(<TimeSeriesChart data={testData} />)).not.toThrow();
+});
+
+test("passes correct props to Chart", () => {
+  const testData = [{ x: 1721389287273, y: 50 }];
+  render(<TimeSeriesChart data={testData} />);
+  const chartProps = mockedChart.mock.calls[0][0] as ChartProps;
+  expect(chartProps.series[0].data).toEqual(testData);
 });

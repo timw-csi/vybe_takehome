@@ -10,9 +10,9 @@ const PieChart: React.FC<PieChartProps> = ({ data }) => {
     labels: data.labels,
   };
 
-  return (
-    <Chart options={options} series={data.series} type="pie" width="380" />
-  );
+  const series = data.series;
+
+  return <Chart options={options} series={series} type="pie" width="380" />;
 };
 
 export default PieChart;
