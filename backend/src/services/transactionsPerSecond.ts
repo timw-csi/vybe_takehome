@@ -37,7 +37,6 @@ const fetchTransactionsPerSecond = async (): Promise<number> => {
       return tps;
     }
 
-    console.log(tps);
     return 0;
   } catch (err) {
     console.log(err);
