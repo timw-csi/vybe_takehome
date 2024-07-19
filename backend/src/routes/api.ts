@@ -1,11 +1,11 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import fetchMarketCapDistribution from "../services/marketCapDistribution";
 import fetchTransactionsPerSecond from "../services/transactionsPerSecond";
 import fetchWalletBalance from "../services/walletBalance";
 
 const router = Router();
 
-router.get("/market-cap-distribution", async (req, res) => {
+router.get("/market-cap-distribution", async (req: Request, res: Response) => {
   try {
     const data = await fetchMarketCapDistribution();
     res.json(data);
@@ -16,7 +16,7 @@ router.get("/market-cap-distribution", async (req, res) => {
   }
 });
 
-router.get("/transactions-per-second", async (req, res) => {
+router.get("/transactions-per-second", async (req: Request, res: Response) => {
   try {
     const data = await fetchTransactionsPerSecond();
     res.json(data);
@@ -27,7 +27,7 @@ router.get("/transactions-per-second", async (req, res) => {
   }
 });
 
-router.get("/wallet-balance", async (req, res) => {
+router.get("/wallet-balance", async (req: Request, res: Response) => {
   try {
     const data = await fetchWalletBalance();
     res.json(data);

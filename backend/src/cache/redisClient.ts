@@ -3,7 +3,7 @@ import { createClient } from "redis";
 // use default config settings of localhost and port 6379
 // would provide more detailed connection config object using env variables for production
 const client = createClient({
-  url: `redis://redis:6379`,
+  url: process.env.REDIS_URL,
 });
 
 // log successful connection

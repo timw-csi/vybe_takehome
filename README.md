@@ -1,8 +1,13 @@
-## To spin up the backend in dev environment
+## Environment variables
+
+.env file would never be shared to public repo, but for this assignment in `backend` dir, all you need to do is remove `.example` from end of `.env.example` filename for environment variables to work.
+
+## To spin up the backend
 
 ```sh
 cd backend
 npm install
+docker compose build
 docker compose up
 ```
 
@@ -16,11 +21,28 @@ npm run dev
 
 ## To run tests
 
-```
+```sh
 cd frontend
 npm test
 ```
 
-Overall, I feel like this application works well, besides the testing (Vite/React/Typescript not playing well together). Some things I would have liked to accomplish with more time: making use of environment variables instead of hardcoding URL for connection to the Redis database, and figuring out how to get the y-axis values to appear in the tooltip for the non-piechart apexcharts.
+## To build frontend
+
+```sh
+cd frontend
+npm run build
+```
+
+## To build entire project
+
+Implement "Bonus points if you implement a build script to create the backend server container and include the frontend code to serve using SSR or static JS." here
+
+```sh
+
+```
+
+## Final thoughts
+
+Overall, I feel like this application works well. For testing, I find that vitest works more smoothly with Vite projects, and it has a similar syntax to Jest, so I went with vitest. Some things I would have liked to accomplish with more time: adding testing on the backend and figuring out how to get the y-axis values to appear in the tooltip for the non-piechart apexcharts.
 
 - Tim

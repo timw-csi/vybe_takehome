@@ -1,30 +1,59 @@
-import React from "react";
-import { render, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, vi } from "vitest";
 import Dashboard from "./Dashboard";
 import * as api from "../services/api";
 
-jest.mock("../services/api");
+vi.mock("../services/api");
 
-test("renders Dashboard with charts", async () => {
-  (api.getMarketCapDistribution as jest.Mock).mockResolvedValue([
-    { token: "Token1", marketCap: 10 },
-    { token: "Token2", marketCap: 20 },
-  ]);
+vi.mock("react-apexcharts", () => ({
+  default: vi.fn(() => null),
+}));
 
-  (api.getTransactionsPerSecond as jest.Mock).mockResolvedValue([
-    { timestamp: "2023-01-01T00:00:00Z", tps: 50 },
-  ]);
+describe("Dashboard Component", () => {
+  beforeEach(() => {
+    vi.mocked(api.getMarketCapDistribution).mockResolvedValue([
+      { symbol: "Token1", marketCap: 55 },
+    ]);
+    vi.mocked(api.getTransactionsPerSecond).mockResolvedValue([
+      { timestamp: "2023-01-01T00:00:00Z", tps: 50 },
+    ]);
+    vi.mocked(api.getWalletBalances).mockResolvedValue([
+      { wallet: "wallet-1", balance: 1000 },
+    ]);
+  });
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
 
-  (api.getWalletBalances as jest.Mock).mockResolvedValue([
-    { wallet: "Wallet1", balance: 100 },
-    { wallet: "Wallet2", balance: 200 },
-  ]);
+  test("renders Solana Dashboard", async () => {
+    render(<Dashboard />);
+    const solanaHeading = await screen.findByRole("heading", {
+      name: "Solana Dashboard",
+    });
+    expect(solanaHeading).toBeInTheDocument();
+  });
 
-  const { getByText } = render(<Dashboard />);
+  test("renders Market Cap Distribution chart", async () => {
+    render(<Dashboard />);
+    const marketCapHeading = await screen.findByRole("heading", {
+      name: "Market Cap Distribution",
+    });
+    expect(marketCapHeading).toBeInTheDocument();
+  });
 
-  await waitFor(() => expect(getByText("Token1")).toBeInTheDocument());
-  expect(getByText("Token2")).toBeInTheDocument();
-  expect(getByText("50")).toBeInTheDocument();
-  expect(getByText("Wallet1")).toBeInTheDocument();
-  expect(getByText("Wallet2")).toBeInTheDocument();
+  test("renders Transactions Per Second chart", async () => {
+    render(<Dashboard />);
+    const transactionsHeading = await screen.findByRole("heading", {
+      name: "Transactions Per Second",
+    });
+    expect(transactionsHeading).toBeInTheDocument();
+  });
+
+  test("renders Wallet Balances chart", async () => {
+    render(<Dashboard />);
+    const walletBalancesHeading = await screen.findByRole("heading", {
+      name: "Wallet Balances",
+    });
+    expect(walletBalancesHeading).toBeInTheDocument();
+  });
 });

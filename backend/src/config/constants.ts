@@ -1,8 +1,8 @@
-const API_KEY = "ea805f4e-96f2-4e01-af8c-9465f84db75d";
+const API_KEY = process.env.API_KEY;
 
-export const SOLANA_RPC_ENDPOINT: string = `https://solana-mainnet.rpc.extrnode.com/${API_KEY}`;
-export const PRICE_API_ENDPOINT: string = "https://price.jup.ag/v6/price?ids=";
-export const PORT: number = 3000;
+export const SOLANA_RPC_ENDPOINT: string = `${process.env.SOLANA_URL}${API_KEY}`;
+export const PRICE_API_ENDPOINT: string = `${process.env.PRICE_API}`;
+export const PORT: number = Number(process.env.PORT);
 export const LONG_TTL: number = 900;
 export const SHORT_TTL: number = 10;
 export const ONE_MINUTE: number = 60000;
