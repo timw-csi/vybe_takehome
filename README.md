@@ -1,6 +1,6 @@
 Hello Vybers,
 
-Thanks for the opportunity and I look forward to speaking with you about this assignment.
+Thanks for the opportunity and I look forward to speaking with you about this assignment :)
 
 ## Environment variables
 
