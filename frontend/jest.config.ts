@@ -1,21 +1,10 @@
-import type { Config } from "@jest/types";
+import type { Config } from "jest";
 
-const config: Config.InitialOptions = {
+const config: Config = {
   preset: "ts-jest",
+  verbose: true,
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
 };
 
 export default config;
-
-// export default {
-//   preset: "ts-jest",
-//   testEnvironment: "jest-environment-jsdom",
-//   transform: {
-//     "^.+\\.tsx?$": "ts-jest",
-//     // process `*.tsx` files with `ts-jest`
-//   },
-//   moduleNameMapper: {
-//     "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__ mocks __/fileMock.js",
-//   },
-// };
