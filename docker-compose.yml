@@ -3,8 +3,8 @@ version: "3.8"
 services:
   backend:
     build: .
-    container_name: solana-backend-only
-    env_file: .env
+    container_name: solana-backend-fs
+    env_file: backend/.env
     ports:
       - "3000:3000"
     depends_on:

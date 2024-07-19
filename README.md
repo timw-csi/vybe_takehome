@@ -1,3 +1,7 @@
+Hello Vybers,
+
+Thanks for the opportunity and I look forward to speaking with you about this assignment.
+
 ## Environment variables
 
 .env file would never be shared to public repo, but for this assignment in `backend` dir, all you need to do is remove `.example` from end of `.env.example` filename for environment variables to work.
@@ -31,15 +35,21 @@ npm test
 ```sh
 cd frontend
 npm run build
+npm run preview
 ```
 
-## To build entire project
+## To build entire project, serving static JS of frontend
 
-Implement "Bonus points if you implement a build script to create the backend server container and include the frontend code to serve using SSR or static JS." here
+"Bonus points if you implement a build script to create the backend server container and include the frontend code to serve using SSR or static JS."
+
+from root dir of project:
 
 ```sh
-
+docker compose build
+docker compose up
 ```
+
+browse to http://localhost:3000
 
 ## Final thoughts
 
