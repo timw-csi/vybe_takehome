@@ -9,6 +9,8 @@ Thanks for the opportunity and I look forward to speaking with you about this as
 ## To spin up the backend
 
 ```sh
+docker compose down -v   # to stop and clean up any previous docker instances 
+
 cd backend
 npm install
 docker compose build
@@ -42,9 +44,11 @@ npm run preview
 
 "Bonus points if you implement a build script to create the backend server container and include the frontend code to serve using SSR or static JS."
 
-from root dir of project:
+**from root dir of project**:
 
 ```sh
+docker compose down -v   # to stop and clean up any previous docker instances
+
 docker compose build
 docker compose up
 ```
