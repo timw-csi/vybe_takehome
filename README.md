@@ -57,6 +57,6 @@ browse to http://localhost:3000
 
 ## Final thoughts
 
-Overall, I feel like this application works well. For testing, I find that vitest works more smoothly with Vite projects, and it has a similar syntax to Jest, so I went with vitest. Some things I would have liked to accomplish with more time: adding testing on the backend and figuring out how to get the y-axis values to appear in the tooltip for the non-piechart apexcharts.
+Overall, I feel like this application works well. For testing, I find that vitest works more smoothly with Vite projects, and it has a similar syntax to Jest, so I went with vitest. Some things I would have liked to accomplish with more time: adding testing on the backend.
 
 - Tim
