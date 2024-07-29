@@ -6,8 +6,15 @@ import fetchWalletBalance from "../services/walletBalance";
 const router = Router();
 
 router.get("/market-cap-distribution", async (req: Request, res: Response) => {
+  const tokensParam = req.query.tokens;
+  if (!tokensParam) {
+    return res.status(400).json({ error: "Missing tokens parameter" });
+  }
+
+  const tokens: string[] =
+    typeof tokensParam === "string" ? tokensParam.split(",") : [];
   try {
-    const data = await fetchMarketCapDistribution();
+    const data = await fetchMarketCapDistribution(tokens);
     res.json(data);
   } catch (err) {
     if (err instanceof Error) {
@@ -28,8 +35,16 @@ router.get("/transactions-per-second", async (req: Request, res: Response) => {
 });
 
 router.get("/wallet-balance", async (req: Request, res: Response) => {
+  const walletsParam = req.query.wallets;
+  if (!walletsParam) {
+    return res.status(400).json({ error: "Missing wallets parameter" });
+  }
+
+  const wallets: string[] =
+    typeof walletsParam === "string" ? walletsParam.split(",") : [];
+
   try {
-    const data = await fetchWalletBalance();
+    const data = await fetchWalletBalance(wallets);
     res.json(data);
   } catch (err) {
     if (err instanceof Error) {

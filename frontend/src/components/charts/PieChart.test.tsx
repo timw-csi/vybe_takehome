@@ -1,14 +1,20 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import PieChart from "./PieChart";
-import { vi } from "vitest";
+import { Mock, vi } from "vitest";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
-const mockedChart = vi.mocked(Chart, true);
+import { getMarketCapDistribution } from "../../services/api";
+
+// Mock the getWalletBalances function
+vi.mock("../../services/api");
+
 vi.mock("react-apexcharts", () => {
   return {
     default: vi.fn(() => null),
   };
 });
+
+const mockedChart = vi.mocked(Chart, true);
 
 type ChartProps = {
   options: ApexOptions;
@@ -17,15 +23,25 @@ type ChartProps = {
     data: Array<{ x: number; y: number }>;
   }>;
 };
-
+const testData = [
+  { symbol: "Token1", marketCap: 10 },
+  { symbol: "Token2", marketCap: 20 },
+];
 test("renders without crashing", () => {
-  const testData = { labels: ["Token1", "Token2"], series: [10, 20] };
-  expect(() => render(<PieChart data={testData} />)).not.toThrow();
+  (getMarketCapDistribution as Mock).mockResolvedValue(testData);
+
+  expect(() => render(<PieChart />)).not.toThrow();
 });
 
-test("passes correct props to Chart", () => {
-  const testData = { labels: ["Token1", "Token2"], series: [10, 20] };
-  render(<PieChart data={testData} />);
-  const chartProps = mockedChart.mock.calls[0][0] as ChartProps;
-  expect(chartProps.series).toEqual(testData.series);
+test("passes correct props to Chart", async () => {
+  (getMarketCapDistribution as Mock).mockResolvedValue(testData);
+  await act(async () => {
+    render(<PieChart />);
+  });
+
+  const chartProps = mockedChart.mock.calls[2][0] as ChartProps;
+  expect(chartProps.series).toEqual([
+    testData[0].marketCap,
+    testData[1].marketCap,
+  ]);
 });

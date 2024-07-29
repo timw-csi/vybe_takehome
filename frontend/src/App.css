@@ -41,20 +41,56 @@
   color: #888;
 }
 
-/* In your CSS file, e.g., App.css or Dashboard.css */
-.dashboard-container {
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+  background-color: #4b0082; /* Indigo background */
+}
+
+.app-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .chart-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem; /* Add some margin between chart sections */
 }
 
 .centered {
   text-align: center;
+}
+
+.sidenav {
+  border-right: 1px solid black;
+  width: 100px;
+  height: 50vh;
+  background-color: #6a0dad; /* Purple header */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 30px;
+}
+
+.sidenav ul {
+  list-style-type: none;
+  text-align: left;
+  margin-left: 0px;
+  font-size: medium;
+}
+.sidenav li {
+  border-bottom: 2px solid #ffffff;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #4b0082; /* Indigo background */
+  overflow-y: auto;
+}
+
+h1 {
+  color: white;
 }
