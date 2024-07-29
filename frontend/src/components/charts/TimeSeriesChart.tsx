@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import { ITps } from "../../models";
+import { getTransactionsPerSecond } from "../../services/api";
+import { ONE_MINUTE } from "../../config/constants";
 
-interface TimeSeriesChartProps {
-  data: { x: number; y: number }[];
-}
+// moved data fetching to individual chart components to avoid unnecessary re-rendering
+const TimeSeriesChart: React.FC = () => {
+  const [tpsData, setTpsData] = useState<{ x: number; y: number }[]>([]);
 
-// can't get y-axis tooltip to work
-const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data }) => {
+  useEffect(() => {
+    async function fetchTPS() {
+      const tps = await getTransactionsPerSecond();
+      setTpsData(tps.map((item: ITps) => ({ x: item.timestamp, y: item.tps })));
+    }
+
+    // initial data fetch
+    fetchTPS();
+
+    // Set interval to fetch data every minute
+    const intervalId = setInterval(fetchTPS, ONE_MINUTE);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
   const options: ApexOptions = {
     chart: {
       id: "tps-chart",
+      foreColor: "#ffffff",
     },
     xaxis: {
       type: "datetime",
@@ -23,10 +41,13 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data }) => {
       },
       title: {
         text: "Transactions Per Second",
+        style: {
+          fontSize: "20px",
+        },
       },
     },
     tooltip: {
-      shared: false,
+      theme: "dark",
       x: {
         format: "dd MMM yyyy HH:mm:ss",
       },
@@ -41,11 +62,15 @@ const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({ data }) => {
   const series = [
     {
       name: "Transactions Per Second",
-      data,
+      data: tpsData,
     },
   ];
 
-  return <Chart options={options} series={series} type="line" width="500" />;
+  return (
+    <div className="chart-container">
+      <Chart options={options} series={series} type="line" width="500" />
+    </div>
+  );
 };
 
 export default TimeSeriesChart;

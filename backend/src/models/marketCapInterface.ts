@@ -1,5 +1,5 @@
 export interface IMarketCap {
   symbol: string;
   token: string;
-  marketCap: string;
+  marketCap: number;
 }

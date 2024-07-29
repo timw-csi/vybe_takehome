@@ -1,10 +1,16 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config/constants";
 
-const API_BASE_URL = "http://localhost:3000/api";
-
-export const getMarketCapDistribution = async () => {
+export const getMarketCapDistribution = async (tokens: string[]) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/market-cap-distribution`);
+    const response = await axios.get(
+      `${API_BASE_URL}/market-cap-distribution`,
+      {
+        params: {
+          tokens: tokens.join(","),
+        },
+      }
+    );
     return response.data;
   } catch (err) {
     console.log(err);
@@ -20,9 +26,13 @@ export const getTransactionsPerSecond = async () => {
   }
 };
 
-export const getWalletBalances = async () => {
+export const getWalletBalances = async (wallets: string[]) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/wallet-balance`);
+    const response = await axios.get(`${API_BASE_URL}/wallet-balance`, {
+      params: {
+        wallets: wallets.join(","),
+      },
+    });
     return response.data;
   } catch (err) {
     console.log(err);
