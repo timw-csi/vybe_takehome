@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Navbar = () => {
   return (
     <div className="sidenav">
       <ul>
@@ -18,4 +18,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navbar;

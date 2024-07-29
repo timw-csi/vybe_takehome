@@ -1,8 +1,13 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import BarChart from "./BarChart";
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { vi } from "vitest";
+import { Mock, vi } from "vitest";
+import { getWalletBalances } from "../../services/api";
+import { IWalletBalance } from "../../models";
+
+// Mock the getWalletBalances function
+vi.mock("../../services/api");
 
 vi.mock("react-apexcharts", () => {
   return {
@@ -15,26 +20,34 @@ type ChartProps = {
   options: ApexOptions;
   series: Array<{
     name?: string;
-    data: Array<{ x: number; y: number }>;
+    data: Array<number>;
   }>;
   type: string;
   width: string | number;
 };
 
-test("renders without crashing", () => {
-  const testData = [
-    { x: "Wallet1", y: 100 },
-    { x: "Wallet2", y: 200 },
-  ];
-  expect(() => render(<BarChart data={testData} />)).not.toThrow();
+const mockWalletBalances: IWalletBalance[] = [
+  { wallet: "Wallet 1", balance: 100 },
+  { wallet: "Wallet 2", balance: 200 },
+  { wallet: "Wallet 3", balance: 300 },
+];
+
+test("renders without crashing", async () => {
+  (getWalletBalances as Mock).mockResolvedValue(mockWalletBalances);
+
+  expect(() => render(<BarChart />)).not.toThrow();
 });
 
-test("passes correct props to Chart", () => {
-  const testData = [
-    { x: "Wallet1", y: 100 },
-    { x: "Wallet2", y: 200 },
-  ];
-  render(<BarChart data={testData} />);
-  const chartProps = mockedChart.mock.calls[0][0] as ChartProps;
-  expect(chartProps.series[0].data).toEqual([testData[0].y, testData[1].y]);
+test("passes correct props to Chart", async () => {
+  (getWalletBalances as Mock).mockResolvedValue(mockWalletBalances);
+
+  await act(async () => {
+    render(<BarChart />);
+  });
+  const chartProps = mockedChart.mock.calls[2][0] as ChartProps;
+  expect(chartProps.series[0].data).toEqual([
+    mockWalletBalances[0].balance,
+    mockWalletBalances[1].balance,
+    mockWalletBalances[2].balance,
+  ]);
 });
